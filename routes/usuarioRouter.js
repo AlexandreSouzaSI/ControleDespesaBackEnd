@@ -7,7 +7,7 @@ const { getUsuario, cadastrarUsuario, deleleUsuario, alterarUsuario, loginUsuari
 router.get('/usuarios', getUsuario);
 router.post('/login', loginUsuario)
 router.post('/usuarios', cadastrarUsuario)
-router.delete('/usuarios/:id', deleleUsuario)
-router.put('/usuarios/:id', alterarUsuario)
+router.delete('/usuarios/:id_usuario', deleleUsuario)
+router.put('/usuarios/:id_usuario', alterarUsuario)
 
 module.exports = router;

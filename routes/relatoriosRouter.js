@@ -4,7 +4,7 @@ const router = Router();
 
 const { getTotalPorPessoa, getTotalaPagar } = require('../controller/relatoriosController');
 
-router.post('/totalPessoa', getTotalPorPessoa);
+router.post('/despesaPessoa', getTotalPorPessoa);
 router.post('/totalapagar', getTotalaPagar);
 
 

@@ -15,6 +15,7 @@ app.use(require('./routes/usuarioRouter'));
 app.use(require('./routes/categoriaRouter'));
 app.use(require('./routes/despesasRouter'));
 app.use(require('./routes/relatoriosRouter'));
+app.use(require('./routes/validacaoRouter'));
 
 app.listen(4000);
 console.log('Server on port 4000')

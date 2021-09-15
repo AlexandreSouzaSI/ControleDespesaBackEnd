@@ -19,7 +19,7 @@ const getUsuario = async (req, res) => {
 const cadastrarUsuario = async (req, res) => {
     const { name, email, telefone } = req.body;
 
-    const compare = await pool.query(`SELECT * FROM usuarios WHERE email = $1`, [email])
+    const compare = await pool.query(`SELECT * FROM usuarios WHERE email = $1 AND date_delete is null`, [email])
 
 
     if (compare.rowCount === 1 || compare.rowCount > 1) {
@@ -48,7 +48,7 @@ const loginUsuario = async (req, res) => {
     let token;
 
     
-    const response = await pool.query('SELECT id_usuario, email, senha, name, telefone FROM usuarios WHERE email = $1', [email]);
+    const response = await pool.query('SELECT id_usuario, email, senha, name, telefone FROM usuarios WHERE email = $1 AND date_delete is NULL', [email]);
 
     if (response.rowCount === 0) {
         console.log("Email ou senha incorretos")
@@ -61,7 +61,7 @@ const loginUsuario = async (req, res) => {
     bcrypt.compare(senha, senhaLogin, function(err, result) {
 
         if(usuarioLogin == email && result == true){
-            const idLogin = response.rows[0].id_usuario_cadastrado;
+            const idLogin = response.rows[0].id_usuario;
             const NomeUser = response.rows[0].name;
             const NomeTel = response.rows[0].telefone;
             const usuarioInfo = {
@@ -69,7 +69,6 @@ const loginUsuario = async (req, res) => {
                 "name": NomeUser,
                 "email": usuarioLogin,
                 "id": idLogin,
-                "admin": false
             }
 
             token = jwt.sign(usuarioInfo, process.env.SECRET);
@@ -85,9 +84,10 @@ const loginUsuario = async (req, res) => {
 }
 
 const deleleUsuario = async (req, res) => {
-    const id = parseInt(req.params.id);
-    const response = await pool.query('UPDATE usuarios SET date_delete = $1 WHERE id_usuario= $2', [date_delete = new Date(), id]);
-    res.status(204).json(`Usuario ${id} deletado com sucesso!`)
+    const id_usuario = parseInt(req.params.id_usuario);
+    console.log(id_usuario)
+    const response = await pool.query('UPDATE usuarios SET date_delete = $1 WHERE id_usuario = $2', [date_delete = new Date(), id_usuario]);
+    res.status(204).json(`Usuario ${id_usuario} deletado com sucesso!`)
 };
 
 const alterarUsuario = async (req, res) => {
